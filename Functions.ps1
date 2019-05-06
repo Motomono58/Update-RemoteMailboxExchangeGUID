@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.0
+.VERSION 1.1
 
 .GUID ef8d8a67-099d-4250-b6ea-bccb73d83a08
 
@@ -26,7 +26,7 @@
 .EXTERNALSCRIPTDEPENDENCIES
 
 .RELEASENOTES
-
+Added Exchange On-Prem connection function
 
 .PRIVATEDATA
 
@@ -39,7 +39,7 @@
 
 #>
 
-#Function to connect to EXO Shell
+#Function to connect to Exchang Online Shell
 Function New-EXOSession
 {
     [CmdletBinding()]
@@ -48,9 +48,22 @@ Function New-EXOSession
         [PSCredential] $exoCredential
     )
 
-    Get-PSSession | Remove-PSSession -Confirm:$false
-    $EXOSession = New-PSSession -ConfigurationName "Microsoft.Exchange" -ConnectionUri 'https://ps.outlook.com/powershell' -Credential $exoCredential -Authentication Basic -AllowRedirection -WarningAction SilentlyContinue
-    Import-PSSession $EXOSession -AllowClobber -DisableNameChecking | out-null
+    Remove-PSSession -Name "ExchangeOnline" -Confirm:$false -ErrorAction SilentlyContinue
+    $EXOSession = New-PSSession -Name "ExchangeOnline" -ConfigurationName "Microsoft.Exchange" -ConnectionUri 'https://ps.outlook.com/powershell' -Credential $exoCredential -Authentication Basic -AllowRedirection -WarningAction SilentlyContinue
+    Import-PSSession $EXOSession -AllowClobber -DisableNameChecking -Prefix Exo | out-null
+}
+
+#Function to connect to Exchange OnPrem Shell
+Function New-ExSession()
+{
+    [CmdletBinding()]
+    param(
+        [parameter(mandatory=$true,position=0)]
+        [string] $exchangeServer
+    )
+    Remove-PSSession -Name "ExchangeOnPrem" -Confirm:$false -ErrorAction SilentlyContinue
+	$EXSession = New-PSSession -Name "ExchangeOnPrem" -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$($exchangeServer)/PowerShell/" -Authentication Kerberos
+	Import-PSSession $EXSession -AllowClobber -DisableNameChecking -Prefix Ex | out-null
 }
 
 #Function to compress file (ps 4.0)
