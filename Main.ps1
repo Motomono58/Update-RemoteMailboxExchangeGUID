@@ -88,7 +88,7 @@ $params = @{
 
 if ($domainController) {$params += @{domainController = $domainController}}
 if ($removeOldFiles) {$params += @{removeOldFiles = $removeOldFiles}}
-if ($logDirectoryerver) {$params += @{logDirectory = $logDirectory}}
+if ($logDirectory) {$params += @{logDirectory = $logDirectory}}
 if ($smtpServer) {$params += @{smtpServer = $smtpServer}}
 if ($sender) {$params += @{sender = $sender}}
 if ($recipients) {$params += @{recipients = $recipients}}

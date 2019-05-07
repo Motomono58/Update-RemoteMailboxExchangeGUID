@@ -310,7 +310,7 @@ if (($finalResult | Where-Object {$_.Note -eq "O"}).Count -gt 0)
     $htmlBody += "</table><a href=""$($scriptInfo.ProjectURI)"">$($scriptInfo.Name)</a> version $($scriptInfo.version)</html>"   
 	$htmlBody | out-file $outputHTML
 	
-    if ($sendEmail -eq $true) 
+    if ($sendEmail -eq $true)
     {
         Write-Host (get-date -Format "dd-MMM-yyyy hh:mm:ss tt") ": Sending email to" ($recipients -join ",") -ForegroundColor Green
         $mailParams = @{
